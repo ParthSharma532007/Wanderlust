@@ -101,36 +101,30 @@
                                                     <%=review.comment %>
                                                 </p>
 
-                                                <form class="mb-3" method="POST"
-                                                    action="/listings/<%= listing._id %>/reviews/<%=review._id%>?_method=DELETE">
-                                                    <button class="btn btn-sm btn-dark">Delete</button>
-                                                </form>
+                                                <% if (currUser && review.author._id.equals(currUser._id)) { %>
+                                                    <form class="mb-3" method="POST"
+                                                        action="/listings/<%= listing._id %>/reviews/<%=review._id%>?_method=DELETE">
+                                                        <button class="btn btn-sm btn-dark">Delete</button>
+                                                    </form>
+                                                    <% } %>
                                             </div>
                                         </div>
                                         <% } %>
                                 </div>
                                 <% } %>
-                
-    <h3>Where you'll be</h3>
-<div 
-        id="map" 
-        data-geometry='<%- JSON.stringify(listing.geometry) %>'>
-      </div>
 
+                                    <h3>Where you'll be</h3>
+                                    <div id="map" data-geometry='<%- JSON.stringify(listing.geometry) %>'>
+                                    </div>
+
+                </div>
     </div>
-  </div>
-</div>
+    </div>
 
 
-<link
-  rel="stylesheet"
-  href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-/>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 
-<script src="/js/map.js"></script>
-  
-
-
+    <script src="/js/map.js"></script>
