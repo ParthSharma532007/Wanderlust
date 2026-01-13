@@ -71,12 +71,6 @@ const sessionOptions = {
     },
 };
 
-// app.get("/", (req, res) => {
-//     res.send("Hi, I am root");
-// });
-
-
-
 
 app.use(session(sessionOptions));
 app.use(flash());
@@ -96,16 +90,10 @@ app.use((req, res, next) => {
     next();
 });
 
-// app.get("/demouser", async (req, res) => {
-//     const user = new User({
-//         username: "student",
-//         email: "student@gmail.com" 
-//     });
-//     const newUser = await User.register(user, "helloworld");
-//     res.send(newUser);
-// });
+app.get("/", (req, res) => {
+    res.redirect("/listings");
+});
 
-// in this we use router middleware
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
