@@ -29,6 +29,8 @@ module.exports.showListing =  async (req, res) => {
         req.flash("error" , "Cannot find that listing!");
         return res.redirect("/listings");
     }
+    console.log("SHOW GEOMETRY:", listing.geometry.coordinates);
+
     res.render("listings/show.ejs", { listing });
 
 };
@@ -41,15 +43,10 @@ module.exports.createListing = async (req, res, next) => {
 
         const geometry = await geocodeLocation(req.body.listing.location);
         if (!geometry) {
-          req.flash("error", "Could not find that location, using default coordinates");
-          newListing.geometry = {
-            type: "Point",
-            coordinates: [77.2090, 28.6139]
-        };
-        } else {
-            newListing.geometry = geometry;
+            req.flash("error", "Location not found. Please enter a valid place (e.g. Goa, India)");
+            return res.redirect("/listings/new"); 
         }
-
+        newListing.geometry = geometry;
 
         // for validate schema we need to write same code as above for title ,price ,...  
         // or another way use joi
@@ -86,12 +83,17 @@ module.exports.updateListing = async (req, res) => {
     
     let listing = await Listing.findByIdAndUpdate(id, { ...req.body.listing });
 
+   const geometry = await geocodeLocation(req.body.listing.location);
+    if (geometry) {
+        listing.geometry = geometry;
+    }
+
     if(typeof req.file !== 'undefined'){
     let url = req.file.path;
     let filename = req.file.filename;
     listing.image = {url , filename};
-    await listing.save();
     }
+    await listing.save();
 
     req.flash("success" , "Listing Updated!");
     res.redirect(`/listings/${id}`);

@@ -2,7 +2,7 @@ const https = require("https");
 
 async function geocodeLocation(location) {
   return new Promise((resolve, reject) => {
-    const query = encodeURIComponent(`${location}, India`);
+    const query = encodeURIComponent(location);
     const url = `https://nominatim.openstreetmap.org/search?format=json&q=${query}`;
 
     const options = {
